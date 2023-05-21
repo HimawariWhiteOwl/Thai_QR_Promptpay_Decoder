@@ -26,7 +26,7 @@ class _DeCodeQRState extends State<DeCodeQR> {
       String data = QRRawData.substring(index, index + QRdatalen);
       index += QRdatalen;
 
-      if (TagId == "30" || TagId == "31") {
+      if (TagId == "29" || TagId == "30" || TagId == "31") {
         print("=============== Start Tag ${TagId} ===============");
         int indexv2 = 0;
         while (indexv2 < data.length) {
