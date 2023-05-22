@@ -15,6 +15,6 @@ class Route{
   static final Map<String,WidgetBuilder> _route = {
     home : (context) => HomePage(),
     qrScanner : (context)=>QRPage(),
-    decodePage: (context)=>DeCodeQR(result: null,),
+    decodePage: (context)=>DeCodeQR(result: null,controller: null,),
   };
 }

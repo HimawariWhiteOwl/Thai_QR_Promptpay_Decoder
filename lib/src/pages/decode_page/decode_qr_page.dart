@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class DeCodeQR extends StatefulWidget {
-  const DeCodeQR({Key? key, required this.result}) : super(key: key);
+  const DeCodeQR({Key? key, required this.result, required this.controller})
+      : super(key: key);
   final Barcode? result;
+  final QRViewController? controller;
 
   @override
   State<DeCodeQR> createState() => _DeCodeQRState();
@@ -12,6 +14,7 @@ class DeCodeQR extends StatefulWidget {
 class _DeCodeQRState extends State<DeCodeQR> {
   @override
   Widget build(BuildContext context) {
+    widget.controller!.pauseCamera();
     String QRRawData = widget.result!.code!;
     int index = 0;
     List<String> TagIdList = [];
@@ -50,36 +53,49 @@ class _DeCodeQRState extends State<DeCodeQR> {
         DataList.add(data);
       }
     }
-    print(TagIdList);
-    print(LenList);
-    print(DataList);
-    print("Formate: ${widget.result!.format} Code: ${widget.result!.code}");
-
-    return Scaffold(
-      appBar: AppBar(title: const Text('Decode QR Page')),
-      body: Center(
-        child: Card(
-          child: Scrollbar(
-            child: ListView.builder(
-              itemBuilder: (context, index) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    ListTile(
-                      leading: Icon(Icons.album),
-                      title: Text("Tag ID: ${TagIdList[index]}"),
-                      //${TagIdList[index]}
-                      subtitle: Text("lenght: ${LenList[index]}"),
-                      trailing: Text("${DataList[index]}"),
-                    ),
-                  ],
-                );
+    // print(TagIdList);
+    // print(LenList);
+    // print(DataList);
+    // print("Formate: ${widget.result!.format} Code: ${widget.result!.code}");
+    return WillPopScope(
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Decode QR Page'),
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back_ios),
+              onPressed: () {
+                widget.controller!.resumeCamera();
+                Navigator.of(context).pop();
               },
-              itemCount: TagIdList.length == 0? 0: TagIdList.length,
+            ),
+          ),
+          body: Center(
+            child: Card(
+              child: Scrollbar(
+                child: ListView.builder(
+                  itemBuilder: (context, index) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        ListTile(
+                          leading: Icon(Icons.album),
+                          title: Text("Tag ID: ${TagIdList[index]}"),
+                          //${TagIdList[index]}
+                          subtitle: Text("lenght: ${LenList[index]}"),
+                          trailing: Text("${DataList[index]}"),
+                        ),
+                      ],
+                    );
+                  },
+                  itemCount: TagIdList.length == 0 ? 0 : TagIdList.length,
+                ),
+              ),
             ),
           ),
         ),
-      ),
-    );
+        onWillPop: () async {
+          widget.controller!.resumeCamera();
+          return true;
+        });
   }
 }

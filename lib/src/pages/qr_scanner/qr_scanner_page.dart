@@ -5,8 +5,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:thai_qr_promptpay_scanner/src/pages/decode_page/decode_qr_page.dart';
 import 'package:thai_qr_promptpay_scanner/src/pages/qr_scanner/widget/scan_qr_code_widget.dart';
-
-
+import 'package:vibration/vibration.dart';
 class QRPage extends StatefulWidget {
   const QRPage({Key? key}) : super(key: key);
 
@@ -29,9 +28,14 @@ class _QRPageState extends State<QRPage> {
     }
     controller!.resumeCamera();
   }
+  // void initState() {
+  //   controller!.resumeCamera();
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
+    controller?.resumeCamera();
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -49,7 +53,9 @@ class _QRPageState extends State<QRPage> {
   }
 
   Widget readQR(BuildContext context) {
+    // controller?.resumeCamera();
     if (result != null) {
+
       return Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -59,7 +65,7 @@ class _QRPageState extends State<QRPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => DeCodeQR(result: result!)));
+                      builder: (context) => DeCodeQR(result: result!,controller: controller,)));
             },
             child: Text("Check Data"),
           ),
@@ -69,7 +75,6 @@ class _QRPageState extends State<QRPage> {
         ],
       );
     }
-    result = null;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
@@ -107,8 +112,14 @@ class _QRPageState extends State<QRPage> {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((scanData) {
-      setState(() {
+      setState(() async {
+        await controller.resumeCamera();
         result = scanData;
+        if (result != null) {
+          Vibration.vibrate();
+          Navigator.push(context, MaterialPageRoute(builder: (context) => DeCodeQR(result: result!,controller: controller)));
+          // await controller.pauseCamera();
+        }
       });
     });
   }
