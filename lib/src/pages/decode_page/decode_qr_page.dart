@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-
+import 'package:thai_qr_promptpay_scanner/src/pages/decode_page/EMVCo-Merchant-Presented-QR-Specification.dart';
 class DeCodeQR extends StatefulWidget {
   const DeCodeQR({Key? key, required this.result, required this.controller})
       : super(key: key);
@@ -16,8 +16,10 @@ class _DeCodeQRState extends State<DeCodeQR> {
   Widget build(BuildContext context) {
     widget.controller!.pauseCamera();
     String QRRawData = widget.result!.code!;
+    var TagName = TagMap;
     int index = 0;
     List<String> TagIdList = [];
+    List<String> TagStringList = [];
     List<String> LenList = [];
     List<String> DataList = [];
     while (index < QRRawData.length) {
@@ -31,6 +33,10 @@ class _DeCodeQRState extends State<DeCodeQR> {
 
       if (TagId == "29" || TagId == "30" || TagId == "31") {
         print("=============== Start Tag ${TagId} ===============");
+        // TagIdList.add(TagId);
+        // LenList.add(StrQRdatalen);
+        // DataList.add(data);
+        // TagStringList.add(TagName[TagId]!);
         int indexv2 = 0;
         while (indexv2 < data.length) {
           String TagIdV2 = data.substring(indexv2, indexv2 + 2);
@@ -44,6 +50,15 @@ class _DeCodeQRState extends State<DeCodeQR> {
           TagIdList.add("$TagId:$TagIdV2");
           LenList.add(StrQRdatalen2);
           DataList.add(data2);
+          if (TagId == "29"){
+            TagStringList.add(Tag29Map[TagIdV2]!);
+          }
+          if(TagId == "30"){
+            TagStringList.add(Tag30Map[TagIdV2]!);
+          }
+          if(TagId == "31"){
+            TagStringList.add(Tag31Map[TagIdV2]!);
+          }
         }
         print("=============== END Tag ${TagId} ===============");
       } else {
@@ -51,6 +66,7 @@ class _DeCodeQRState extends State<DeCodeQR> {
         TagIdList.add(TagId);
         LenList.add(StrQRdatalen);
         DataList.add(data);
+        TagStringList.add(TagName[TagId]!);
       }
     }
     // print(TagIdList);
@@ -78,8 +94,8 @@ class _DeCodeQRState extends State<DeCodeQR> {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         ListTile(
-                          leading: Icon(Icons.album),
-                          title: Text("Tag ID: ${TagIdList[index]}"),
+                          leading: Text(TagIdList[index]),//Icon(Icons.album),
+                          title: Text("${TagStringList[index]}"),
                           //${TagIdList[index]}
                           subtitle: Text("lenght: ${LenList[index]}"),
                           trailing: Text("${DataList[index]}"),
