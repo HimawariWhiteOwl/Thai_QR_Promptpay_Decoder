@@ -1,4 +1,4 @@
-# thai_qr_promptpay_scanner
+# thai_qr_promptpay_decoder
 
 A new Flutter project.
 
