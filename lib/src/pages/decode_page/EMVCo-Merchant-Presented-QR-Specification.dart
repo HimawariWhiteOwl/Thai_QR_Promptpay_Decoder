@@ -20,10 +20,11 @@ var TagMap = {
 };
 
 var Tag29Map = {
-  "00": "MobileNo",
-  "01": "NID_TaxID",
-  "02": "EWallletId",
-  "03": "BankAccount"
+  "00": "AID",
+  "01": "MobileNo",
+  "02": "NID_TaxID",
+  "03": "EWallletId",
+  "04": "BankAccount"
 };
 
 var Tag30Map = {
