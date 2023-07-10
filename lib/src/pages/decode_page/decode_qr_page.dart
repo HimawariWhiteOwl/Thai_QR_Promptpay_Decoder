@@ -14,7 +14,7 @@ class DeCodeQR extends StatefulWidget {
 class _DeCodeQRState extends State<DeCodeQR> {
   @override
   Widget build(BuildContext context) {
-    widget.controller!.pauseCamera();
+    // widget.controller!.pauseCamera();
     String QRRawData = widget.result!.code!;
     var TagName = TagMap;
     int index = 0;

@@ -117,6 +117,7 @@ class _QRPageState extends State<QRPage> {
         result = scanData;
         if (result != null) {
           Vibration.vibrate();
+          await controller.pauseCamera();
           Navigator.push(context, MaterialPageRoute(builder: (context) => DeCodeQR(result: result!,controller: controller)));
           // await controller.pauseCamera();
         }
