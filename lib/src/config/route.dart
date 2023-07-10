@@ -1,4 +1,4 @@
-import 'package:thai_qr_promptpay_scanner/src/pages/decode_page/decode_qr_page.dart';
+import 'package:thai_qr_promptpay_scanner/src/pages/decode_page/decode_qr_promptpay_page.dart';
 import 'package:thai_qr_promptpay_scanner/src/pages/home/home_page.dart';
 import 'package:thai_qr_promptpay_scanner/src/pages/pages.dart';
 
@@ -15,6 +15,6 @@ class Route{
   static final Map<String,WidgetBuilder> _route = {
     home : (context) => HomePage(),
     qrScanner : (context)=>QRPage(),
-    decodePage: (context)=>DeCodeQR(result: null,controller: null,),
+    decodePage: (context)=>DeCodeQRPromptPay(result: null,controller: null,),
   };
 }

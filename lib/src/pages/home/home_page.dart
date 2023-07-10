@@ -12,16 +12,21 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Home Page QR Decoder')),
+      appBar: AppBar(title: const Text('Home Page')),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.pushNamed(context, custom_route.Route.qrScanner);
-            // Navigator.of(context).push(MaterialPageRoute(
-            //   builder: (context) => const QRPage(),
-            // ));
-          },
-          child: const Text('Promptpay'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, custom_route.Route.qrScanner);
+                // Navigator.of(context).push(MaterialPageRoute(
+                //   builder: (context) => const QRPage(),
+                // ));
+              },
+              child: const Text('Decode Thai QR Payment'),
+            ),
+          ],
         ),
       ),
     );

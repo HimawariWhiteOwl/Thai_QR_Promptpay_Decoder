@@ -3,9 +3,11 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
-import 'package:thai_qr_promptpay_scanner/src/pages/decode_page/decode_qr_page.dart';
+import 'package:thai_qr_promptpay_scanner/src/pages/decode_page/decode_bot_formate_page.dart';
+import 'package:thai_qr_promptpay_scanner/src/pages/decode_page/decode_qr_promptpay_page.dart';
 import 'package:thai_qr_promptpay_scanner/src/pages/qr_scanner/widget/scan_qr_code_widget.dart';
 import 'package:vibration/vibration.dart';
+
 class QRPage extends StatefulWidget {
   const QRPage({Key? key}) : super(key: key);
 
@@ -28,6 +30,7 @@ class _QRPageState extends State<QRPage> {
     }
     controller!.resumeCamera();
   }
+
   // void initState() {
   //   controller!.resumeCamera();
   //   super.initState();
@@ -55,7 +58,6 @@ class _QRPageState extends State<QRPage> {
   Widget readQR(BuildContext context) {
     // controller?.resumeCamera();
     if (result != null) {
-
       return Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -65,7 +67,10 @@ class _QRPageState extends State<QRPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => DeCodeQR(result: result!,controller: controller,)));
+                      builder: (context) => DeCodeQRPromptPay(
+                            result: result!,
+                            controller: controller,
+                          )));
             },
             child: Text("Check Data"),
           ),
@@ -116,10 +121,22 @@ class _QRPageState extends State<QRPage> {
         await controller.resumeCamera();
         result = scanData;
         if (result != null) {
+          String? QRRawData = result!.code!;
+          print(QRRawData);
+          print(QRRawData.length);
           Vibration.vibrate();
           await controller.pauseCamera();
-          Navigator.push(context, MaterialPageRoute(builder: (context) => DeCodeQR(result: result!,controller: controller)));
-          // await controller.pauseCamera();
+          if (QRRawData.length > 62 && QRRawData.substring(0, 6) == "000201") {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        DeCodeQRPromptPay(result: result!, controller: controller)));
+          } else if (QRRawData.length <= 65 &&
+              QRRawData.substring(0, 1) == "|") { //lenght include "\r"
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => DeCodeNPMSFormate(result: result!, controller: controller)));
+          }
         }
       });
     });

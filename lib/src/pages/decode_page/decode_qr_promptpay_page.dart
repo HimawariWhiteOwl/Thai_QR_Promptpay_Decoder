@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:thai_qr_promptpay_scanner/src/pages/decode_page/EMVCo-Merchant-Presented-QR-Specification.dart';
-class DeCodeQR extends StatefulWidget {
-  const DeCodeQR({Key? key, required this.result, required this.controller})
+class DeCodeQRPromptPay extends StatefulWidget {
+  const DeCodeQRPromptPay({Key? key, required this.result, required this.controller})
       : super(key: key);
   final Barcode? result;
   final QRViewController? controller;
 
   @override
-  State<DeCodeQR> createState() => _DeCodeQRState();
+  State<DeCodeQRPromptPay> createState() => _DeCodeQRPromptPayState();
 }
 
-class _DeCodeQRState extends State<DeCodeQR> {
+class _DeCodeQRPromptPayState extends State<DeCodeQRPromptPay> {
   @override
   Widget build(BuildContext context) {
     // widget.controller!.pauseCamera();
@@ -76,7 +76,7 @@ class _DeCodeQRState extends State<DeCodeQR> {
     return WillPopScope(
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Decode QR Page'),
+            title: const Text('Decode QR PromptPay'),
             leading: IconButton(
               icon: const Icon(Icons.arrow_back_ios),
               onPressed: () {
